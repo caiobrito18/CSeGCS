@@ -1,0 +1,50 @@
+# IDE
+.vscode/
+.idea/
+.vscode-insiders/
+*.swp
+*.swo
+*~
+.DS_Store
+Thumbs.db
+
+# Backend - Maven
+backend/target/
+backend/.classpath
+backend/.project
+backend/.settings/
+backend/*.jar
+backend/*.war
+backend/.factorypath
+
+# Backend - Spring Boot
+backend/build/
+backend/.gradle/
+backend/.idea/
+backend/out/
+backend/*.iml
+
+# Frontend - Angular
+frontend/node_modules/
+frontend/dist/
+frontend/.angular/
+frontend/.angular-config.json
+frontend/npm-debug.log
+frontend/yarn-error.log
+frontend/.DS_Store
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Temporary files
+*.tmp
+*.temp
+*.log
+
+# OS files
+.AppleDouble
+.LSOverride
+ehthumbs.db
+desktop.ini
