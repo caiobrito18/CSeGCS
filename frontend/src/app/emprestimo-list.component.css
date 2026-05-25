@@ -1,0 +1,33 @@
+.nav-tabs {
+  border-bottom: 2px solid #dee2e6;
+}
+
+.nav-tabs .nav-link {
+  color: #495057;
+  border: none;
+  cursor: pointer;
+  transition: all 0.3s ease;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #0d6efd;
+  border-bottom: 3px solid #0d6efd;
+}
+
+.nav-tabs .nav-link.active {
+  color: #0d6efd;
+  border-bottom: 3px solid #0d6efd;
+}
+
+.table {
+  margin-bottom: 0;
+}
+
+.btn-group-sm {
+  gap: 0.25rem;
+}
+
+.spinner-border {
+  width: 3rem;
+  height: 3rem;
+}

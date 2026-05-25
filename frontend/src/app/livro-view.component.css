@@ -1,0 +1,78 @@
+.card {
+  border: 1px solid #dee2e6;
+  box-shadow: 0 0.125rem 0.25rem rgba(0, 0, 0, 0.075);
+}
+
+.card-header {
+  border-bottom: 1px solid #dee2e6;
+}
+
+.card-body {
+  padding: 1.5rem;
+}
+
+.card-footer {
+  border-top: 1px solid #dee2e6;
+  padding: 1rem 1.5rem;
+}
+
+.text-muted {
+  font-size: 0.875rem;
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+.fs-5 {
+  font-size: 1.125rem;
+  margin: 0.5rem 0;
+}
+
+.font-monospace {
+  font-family: 'Courier New', Courier, monospace;
+}
+
+.badge {
+  font-size: 0.875rem;
+  padding: 0.5rem 0.75rem;
+}
+
+.d-flex {
+  display: flex;
+}
+
+.justify-content-between {
+  justify-content: space-between;
+}
+
+.align-items-center {
+  align-items: center;
+}
+
+.btn {
+  padding: 0.5rem 1rem;
+}
+
+@media (max-width: 768px) {
+  .col-md-8 {
+    width: 100%;
+    margin-left: 0;
+  }
+
+  .offset-md-2 {
+    margin-left: 0;
+  }
+
+  .card-footer {
+    flex-direction: column;
+  }
+
+  .card-footer button {
+    width: 100%;
+    margin-bottom: 0.5rem;
+  }
+
+  .card-footer button:last-child {
+    margin-bottom: 0;
+  }
+}

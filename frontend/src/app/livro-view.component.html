@@ -1,0 +1,88 @@
+<div class="container mt-4">
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error && !loading" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = null"></button>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="success = false"></button>
+  </div>
+
+  <!-- Book Details -->
+  <div *ngIf="livro && !loading" class="row">
+    <div class="col-md-8 offset-md-2">
+      <div class="card mb-4">
+        <div class="card-header bg-light d-flex justify-content-between align-items-center">
+          <h3 class="mb-0">{{ livro.titulo }}</h3>
+          <span [ngClass]="{
+            'badge bg-success': livro.status === 'DISPONIVEL',
+            'badge bg-danger': livro.status === 'EMPRESTADO'
+          }">
+            {{ livro.status | status }}
+          </span>
+        </div>
+
+        <div class="card-body">
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6 class="text-muted">Author</h6>
+              <p class="fs-5">{{ livro.autor }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Category</h6>
+              <p class="fs-5">{{ livro.categoriaNome }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6 class="text-muted">ISBN</h6>
+              <p class="fs-5 font-monospace">{{ livro.isbn }}</p>
+            </div>
+            <div class="col-md-6">
+              <h6 class="text-muted">Year</h6>
+              <p class="fs-5">{{ livro.ano }}</p>
+            </div>
+          </div>
+
+          <div class="row mb-3">
+            <div class="col-md-6">
+              <h6 class="text-muted">ID</h6>
+              <p class="fs-5">#{{ livro.id }}</p>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-light d-flex justify-content-between">
+          <button class="btn btn-secondary" (click)="goBack()">Back to List</button>
+          <button class="btn btn-danger" 
+            (click)="delete()" 
+            [disabled]="!canDelete() || loading"
+            [title]="canDelete() ? 'Delete book' : 'Cannot delete borrowed books'">
+            <span *ngIf="!loading">Delete Book</span>
+            <span *ngIf="loading">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Deleting...
+            </span>
+          </button>
+        </div>
+      </div>
+
+      <!-- Note about loaning (for future implementation) -->
+      <div class="alert alert-info" role="alert">
+        <h5 class="alert-heading">Note</h5>
+        <p class="mb-0">Book loan management will be available in Phase 4.</p>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,107 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-info text-white">
+          <h4 class="mb-0">Detalhes do Empréstimo</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" (click)="error = null"></button>
+          </div>
+
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+
+          <div *ngIf="!loading && emprestimo">
+            <!-- Livro Info -->
+            <div class="row mb-4">
+              <div class="col-12">
+                <h5>Livro</h5>
+                <p class="display-6">{{ emprestimo.livroTitulo }}</p>
+              </div>
+            </div>
+
+            <!-- Pessoa Info -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Nome:</label>
+                  <p>{{ emprestimo.nomePessoa }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Telefone:</label>
+                  <p>{{ formatarTelefone(emprestimo.telefonePessoa) }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Dates Info -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Data Empréstimo:</label>
+                  <p>{{ emprestimo.dataEmprestimo | date: 'dd/MM/yyyy' }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Data Prevista Devolução:</label>
+                  <p>{{ emprestimo.dataPrevistaDevolucao | date: 'dd/MM/yyyy' }}</p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Return Date -->
+            <div class="row mb-3">
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Data Devolução:</label>
+                  <p>{{ emprestimo.dataDevolucao ? (emprestimo.dataDevolucao | date: 'dd/MM/yyyy') : 'Não devolvido' }}</p>
+                </div>
+              </div>
+              <div class="col-md-6">
+                <div class="mb-3">
+                  <label class="fw-bold">Status:</label>
+                  <p>
+                    <span [ngClass]="'badge bg-' + obterCorStatus(emprestimo.status)">
+                      {{ traduzirStatus(emprestimo.status) }}
+                    </span>
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            <!-- Overdue Info -->
+            <div *ngIf="emprestimo.status === 'ATRASADO'" class="alert alert-danger">
+              <strong>Atenção!</strong> Este empréstimo está <strong>{{ calcularDiasAtrasado(emprestimo.dataPrevistaDevolucao) }} dias</strong> atrasado.
+            </div>
+
+            <!-- Buttons -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="voltar()">
+                Voltar
+              </button>
+              <button 
+                *ngIf="podeDevolver()"
+                type="button" 
+                class="btn btn-warning"
+                (click)="devolver()">
+                Devolver Livro
+              </button>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

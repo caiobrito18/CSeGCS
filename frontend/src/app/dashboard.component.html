@@ -1,0 +1,96 @@
+<div class="container-fluid mt-4">
+  <h1 class="mb-4">Dashboard - Empréstimos</h1>
+
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = null"></button>
+  </div>
+
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Carregando...</span>
+    </div>
+  </div>
+
+  <div *ngIf="!loading && metrics" class="row g-3">
+    <!-- Total Livros Registrados -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-primary text-white h-100">
+        <div class="card-body">
+          <h5 class="card-title">Livros Registrados</h5>
+          <h2 class="card-text">{{ metrics.totalLivrosRegistrados }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Livros Disponíveis -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-success text-white h-100">
+        <div class="card-body">
+          <h5 class="card-title">Livros Disponíveis</h5>
+          <h2 class="card-text">{{ metrics.totalLivrosDisponiveis }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Livros Emprestados -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-warning text-white h-100">
+        <div class="card-body">
+          <h5 class="card-title">Livros Emprestados</h5>
+          <h2 class="card-text">{{ metrics.totalLivrosEmprestados }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Total Empréstimos Ativos -->
+    <div class="col-md-6 col-lg-4">
+      <div class="card bg-info text-white h-100">
+        <div class="card-body">
+          <h5 class="card-title">Empréstimos Ativos</h5>
+          <h2 class="card-text">{{ metrics.totalEmprestimosAtivos }}</h2>
+        </div>
+      </div>
+    </div>
+
+    <!-- Empréstimos Mais Recentes -->
+    <div class="col-12">
+      <div class="card">
+        <div class="card-header bg-dark text-white">
+          <h5 class="mb-0">5 Empréstimos Mais Recentes</h5>
+        </div>
+        <div class="card-body">
+          <div *ngIf="metrics.emprestimosMaisRecentes.length === 0" class="alert alert-info">
+            Nenhum empréstimo registrado.
+          </div>
+          <table *ngIf="metrics.emprestimosMaisRecentes.length > 0" class="table table-striped table-hover">
+            <thead class="table-dark">
+              <tr>
+                <th>Livro</th>
+                <th>Pessoa</th>
+                <th>Telefone</th>
+                <th>Data Empréstimo</th>
+                <th>Data Prevista</th>
+                <th>Status</th>
+              </tr>
+            </thead>
+            <tbody>
+              <tr *ngFor="let emp of metrics.emprestimosMaisRecentes">
+                <td>{{ emp.livroTitulo }}</td>
+                <td>{{ emp.nomePessoa }}</td>
+                <td>{{ formatarTelefone(emp.telefonePessoa) }}</td>
+                <td>{{ emp.dataEmprestimo | date: 'dd/MM/yyyy' }}</td>
+                <td>{{ emp.dataPrevistaDevolucao | date: 'dd/MM/yyyy' }}</td>
+                <td>
+                  <span [ngClass]="'badge bg-' + obterCorStatus(emp.status)">
+                    {{ traduzirStatus(emp.status) }}
+                  </span>
+                </td>
+              </tr>
+            </tbody>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

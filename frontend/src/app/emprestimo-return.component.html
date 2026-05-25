@@ -1,0 +1,129 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-warning text-dark">
+          <h4 class="mb-0">Devolver Livro</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="success" class="alert alert-success" role="alert">
+            ✓ Livro devolvido com sucesso!
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" (click)="error = null"></button>
+          </div>
+
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+
+          <div *ngIf="!loading && emprestimo" class="row">
+            <div class="col-12">
+              <!-- Detalhes do Empréstimo -->
+              <div class="mb-4">
+                <h5 class="mb-3">Informações do Empréstimo</h5>
+                
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Livro:</label>
+                      <p class="mb-0">{{ emprestimo.livroTitulo }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">ID do Empréstimo:</label>
+                      <p class="mb-0">#{{ emprestimo.id }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Pessoa:</label>
+                      <p class="mb-0">{{ emprestimo.nomePessoa }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Telefone:</label>
+                      <p class="mb-0">{{ formatarTelefone(emprestimo.telefonePessoa) }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Data Empréstimo:</label>
+                      <p class="mb-0">{{ emprestimo.dataEmprestimo | date: 'dd/MM/yyyy' }}</p>
+                    </div>
+                  </div>
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Data Prevista Devolução:</label>
+                      <p class="mb-0">{{ emprestimo.dataPrevistaDevolucao | date: 'dd/MM/yyyy' }}</p>
+                    </div>
+                  </div>
+                </div>
+
+                <div class="row mb-3">
+                  <div class="col-md-6">
+                    <div class="border-bottom pb-2">
+                      <label class="fw-bold">Status:</label>
+                      <p class="mb-0">
+                        <span class="badge" [ngClass]="'bg-' + (emprestimo.status === 'ATIVO' ? 'success' : 'danger')">
+                          {{ traduzirStatus(emprestimo.status) }}
+                        </span>
+                      </p>
+                    </div>
+                  </div>
+                </div>
+              </div>
+
+              <!-- Confirmação -->
+              <div class="alert alert-info">
+                <p class="mb-2">Para confirmar a devolução do livro, marque a caixa de confirmação abaixo:</p>
+              </div>
+
+              <div class="form-check mb-4">
+                <input 
+                  class="form-check-input" 
+                  type="checkbox" 
+                  id="confirmar" 
+                  [(ngModel)]="confirmado">
+                <label class="form-check-label" for="confirmar">
+                  Confirmo que o livro <strong>{{ emprestimo.livroTitulo }}</strong> foi devolvido em bom estado.
+                </label>
+              </div>
+
+              <!-- Botões -->
+              <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                <button 
+                  type="button" 
+                  class="btn btn-secondary"
+                  (click)="voltar()"
+                  [disabled]="submitting">
+                  Cancelar
+                </button>
+                <button 
+                  type="button" 
+                  class="btn btn-warning"
+                  (click)="devolver()"
+                  [disabled]="!confirmado || submitting">
+                  <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                  {{ submitting ? 'Processando...' : 'Confirmar Devolução' }}
+                </button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

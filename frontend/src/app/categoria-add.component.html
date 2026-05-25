@@ -1,0 +1,68 @@
+<div class="container mt-5">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2 class="mb-4">Add New Category</h2>
+
+      <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+        Category created successfully! Redirecting...
+        <button type="button" class="btn-close" (click)="success = false"></button>
+      </div>
+
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" (click)="error = null"></button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()">
+        <div class="mb-3">
+          <label for="nome" class="form-label">Category Name *</label>
+          <input
+            type="text"
+            class="form-control"
+            id="nome"
+            formControlName="nome"
+            [class.is-invalid]="nome?.invalid && nome?.touched"
+            placeholder="Enter category name">
+          <div class="invalid-feedback" *ngIf="nome?.invalid && nome?.touched">
+            <div *ngIf="nome?.errors?.['required']">Name is required</div>
+            <div *ngIf="nome?.errors?.['minlength']">Name must be at least 3 characters long</div>
+          </div>
+        </div>
+
+        <div class="mb-3">
+          <label for="descricao" class="form-label">Description *</label>
+          <textarea
+            class="form-control"
+            id="descricao"
+            formControlName="descricao"
+            [class.is-invalid]="descricao?.invalid && descricao?.touched"
+            rows="4"
+            placeholder="Enter category description"></textarea>
+          <div class="invalid-feedback" *ngIf="descricao?.invalid && descricao?.touched">
+            <div *ngIf="descricao?.errors?.['required']">Description is required</div>
+          </div>
+        </div>
+
+        <div class="d-flex gap-2">
+          <button
+            type="submit"
+            class="btn btn-primary"
+            [disabled]="form.invalid || loading">
+            <span *ngIf="!loading">Create Category</span>
+            <span *ngIf="loading">
+              <span class="spinner-border spinner-border-sm me-2" aria-hidden="true"></span>
+              Creating...
+            </span>
+          </button>
+          <button
+            type="button"
+            class="btn btn-secondary"
+            (click)="cancel()"
+            [disabled]="loading">
+            Cancel
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>

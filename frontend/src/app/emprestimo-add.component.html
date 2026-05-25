@@ -1,0 +1,112 @@
+<div class="container mt-4">
+  <div class="row justify-content-center">
+    <div class="col-md-8">
+      <div class="card">
+        <div class="card-header bg-primary text-white">
+          <h4 class="mb-0">Registrar Novo Empréstimo</h4>
+        </div>
+        <div class="card-body">
+          <div *ngIf="success" class="alert alert-success" role="alert">
+            ✓ Empréstimo registrado com sucesso!
+          </div>
+
+          <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+            {{ error }}
+            <button type="button" class="btn-close" (click)="error = null"></button>
+          </div>
+
+          <div *ngIf="loading" class="text-center">
+            <div class="spinner-border" role="status">
+              <span class="visually-hidden">Carregando...</span>
+            </div>
+          </div>
+
+          <form [formGroup]="form" (ngSubmit)="onSubmit()" *ngIf="!loading">
+            <!-- Livro -->
+            <div class="mb-3">
+              <label for="livroId" class="form-label">Livro *</label>
+              <select 
+                class="form-select" 
+                id="livroId" 
+                formControlName="livroId"
+                [class.is-invalid]="livroId?.invalid && livroId?.touched">
+                <option value="">Selecione um livro</option>
+                <option *ngFor="let livro of livros" [value]="livro.id">
+                  {{ livro.titulo }} - {{ livro.autor }}
+                </option>
+              </select>
+              <div class="invalid-feedback" *ngIf="livroId?.invalid && livroId?.touched">
+                Selecione um livro.
+              </div>
+            </div>
+
+            <!-- Nome da Pessoa -->
+            <div class="mb-3">
+              <label for="nomePessoa" class="form-label">Nome da Pessoa *</label>
+              <input 
+                type="text" 
+                class="form-control" 
+                id="nomePessoa" 
+                formControlName="nomePessoa"
+                [class.is-invalid]="nomePessoa?.invalid && nomePessoa?.touched"
+                placeholder="Nome completo">
+              <div class="invalid-feedback" *ngIf="nomePessoa?.invalid && nomePessoa?.touched">
+                <span *ngIf="nomePessoa?.errors?.['required']">Nome é obrigatório.</span>
+                <span *ngIf="nomePessoa?.errors?.['minlength']">Nome deve ter no mínimo 3 caracteres.</span>
+              </div>
+            </div>
+
+            <!-- Telefone -->
+            <div class="mb-3">
+              <label for="telefonePessoa" class="form-label">Telefone *</label>
+              <input 
+                type="tel" 
+                class="form-control" 
+                id="telefonePessoa" 
+                formControlName="telefonePessoa"
+                [class.is-invalid]="telefonePessoa?.invalid && telefonePessoa?.touched"
+                placeholder="(11) 99999-9999">
+              <div class="invalid-feedback" *ngIf="telefonePessoa?.invalid && telefonePessoa?.touched">
+                <span *ngIf="telefonePessoa?.errors?.['required']">Telefone é obrigatório.</span>
+                <span *ngIf="telefonePessoa?.errors?.['telefoneInvalido']">Telefone inválido (10 ou 11 dígitos).</span>
+              </div>
+            </div>
+
+            <!-- Data Prevista de Devolução -->
+            <div class="mb-3">
+              <label for="dataPrevistaDevolucao" class="form-label">Data Prevista de Devolução *</label>
+              <input 
+                type="date" 
+                class="form-control" 
+                id="dataPrevistaDevolucao" 
+                formControlName="dataPrevistaDevolucao"
+                [class.is-invalid]="dataPrevistaDevolucao?.invalid && dataPrevistaDevolucao?.touched">
+              <div class="invalid-feedback" *ngIf="dataPrevistaDevolucao?.invalid && dataPrevistaDevolucao?.touched">
+                <span *ngIf="dataPrevistaDevolucao?.errors?.['required']">Data é obrigatória.</span>
+                <span *ngIf="dataPrevistaDevolucao?.errors?.['dataPassada']">A data deve ser no futuro.</span>
+              </div>
+            </div>
+
+            <!-- Botões -->
+            <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+              <button 
+                type="button" 
+                class="btn btn-secondary"
+                (click)="voltar()"
+                [disabled]="submitting">
+                Voltar
+              </button>
+              <button 
+                type="submit" 
+                class="btn btn-primary"
+                [disabled]="form.invalid || submitting">
+                <span *ngIf="submitting" class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+                {{ submitting ? 'Registrando...' : 'Registrar Empréstimo' }}
+              </button>
+            </div>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

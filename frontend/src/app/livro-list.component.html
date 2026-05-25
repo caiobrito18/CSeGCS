@@ -1,0 +1,128 @@
+<div class="container mt-4">
+  <div class="row mb-4">
+    <div class="col-md-12">
+      <div class="d-flex justify-content-between align-items-center">
+        <h2>Books</h2>
+        <button class="btn btn-primary" (click)="addBook()">Add Book</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- Success Message -->
+  <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+    {{ successMessage }}
+    <button type="button" class="btn-close" (click)="success = false"></button>
+  </div>
+
+  <!-- Error Message -->
+  <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+    {{ error }}
+    <button type="button" class="btn-close" (click)="error = null"></button>
+  </div>
+
+  <!-- Filters Section -->
+  <div class="card mb-4">
+    <div class="card-header bg-light">
+      <h5 class="mb-0">Filters & Search</h5>
+    </div>
+    <div class="card-body">
+      <form [formGroup]="filterForm" class="row g-3">
+        <div class="col-md-3">
+          <label for="categoriaFilter" class="form-label">Category</label>
+          <select class="form-select" id="categoriaFilter" formControlName="categoriaId">
+            <option [value]="null">All Categories</option>
+            <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="statusFilter" class="form-label">Status</label>
+          <select class="form-select" id="statusFilter" formControlName="status">
+            <option value="TODOS">All</option>
+            <option value="DISPONIVEL">Available</option>
+            <option value="EMPRESTADO">Borrowed</option>
+          </select>
+        </div>
+
+        <div class="col-md-3">
+          <label for="tituloSearch" class="form-label">Title</label>
+          <input type="text" class="form-control" id="tituloSearch" placeholder="Search by title" formControlName="titulo">
+        </div>
+
+        <div class="col-md-3">
+          <label for="autorSearch" class="form-label">Author</label>
+          <input type="text" class="form-control" id="autorSearch" placeholder="Search by author" formControlName="autor">
+        </div>
+
+        <div class="col-12">
+          <button type="button" class="btn btn-primary me-2" (click)="applyFilters()">
+            <span *ngIf="!loading">Apply Filters</span>
+            <span *ngIf="loading"><span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>Loading...</span>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="clearFilters()">Clear</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Loading Indicator -->
+  <div *ngIf="loading" class="text-center">
+    <div class="spinner-border" role="status">
+      <span class="visually-hidden">Loading...</span>
+    </div>
+  </div>
+
+  <!-- Books Table -->
+  <div *ngIf="!loading && livros.length > 0" class="table-responsive">
+    <table class="table table-hover">
+      <thead class="table-light">
+        <tr>
+          <th>ID</th>
+          <th>Title</th>
+          <th>Author</th>
+          <th>ISBN</th>
+          <th>Year</th>
+          <th>Status</th>
+          <th>Category</th>
+          <th>Actions</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr *ngFor="let livro of livros">
+          <td>{{ livro.id }}</td>
+          <td>{{ livro.titulo }}</td>
+          <td>{{ livro.autor }}</td>
+          <td>{{ livro.isbn }}</td>
+          <td>{{ livro.ano }}</td>
+          <td>
+            <span [ngClass]="{
+              'badge bg-success': livro.status === 'DISPONIVEL',
+              'badge bg-danger': livro.status === 'EMPRESTADO'
+            }">
+              {{ livro.status | status }}
+            </span>
+          </td>
+          <td>{{ livro.categoriaNome }}</td>
+          <td>
+            <button class="btn btn-sm btn-info me-2" (click)="viewBook(livro)" title="View details">
+              <i class="bi bi-eye"></i> View
+            </button>
+            <button class="btn btn-sm btn-danger" 
+              (click)="delete(livro)" 
+              [disabled]="!canDelete(livro) || loading"
+              [title]="canDelete(livro) ? 'Delete book' : 'Cannot delete borrowed books'">
+              <i class="bi bi-trash"></i> Delete
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+  </div>
+
+  <!-- Empty State -->
+  <div *ngIf="!loading && livros.length === 0" class="alert alert-info" role="alert">
+    <h4 class="alert-heading">No books found</h4>
+    <p>Try adjusting your filters or search criteria.</p>
+    <button class="btn btn-primary btn-sm" (click)="addBook()">Add your first book</button>
+  </div>
+</div>

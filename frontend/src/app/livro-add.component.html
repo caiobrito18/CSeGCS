@@ -1,0 +1,93 @@
+<div class="container mt-4">
+  <div class="row">
+    <div class="col-md-8 offset-md-2">
+      <h2 class="mb-4">Add Book</h2>
+
+      <!-- Success Message -->
+      <div *ngIf="success" class="alert alert-success alert-dismissible fade show" role="alert">
+        Book created successfully!
+        <button type="button" class="btn-close" (click)="success = false"></button>
+      </div>
+
+      <!-- Error Message -->
+      <div *ngIf="error" class="alert alert-danger alert-dismissible fade show" role="alert">
+        {{ error }}
+        <button type="button" class="btn-close" (click)="error = null"></button>
+      </div>
+
+      <form [formGroup]="form" (ngSubmit)="submit()" class="card">
+        <div class="card-body">
+          <!-- Titulo -->
+          <div class="mb-3">
+            <label for="titulo" class="form-label">Title <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="titulo" formControlName="titulo" 
+              [class.is-invalid]="titulo?.invalid && titulo?.touched">
+            <div class="invalid-feedback d-block" *ngIf="titulo?.invalid && titulo?.touched">
+              <span *ngIf="titulo?.errors?.['required']">Title is required</span>
+              <span *ngIf="titulo?.errors?.['minlength']">Title must be at least 3 characters</span>
+            </div>
+          </div>
+
+          <!-- Autor -->
+          <div class="mb-3">
+            <label for="autor" class="form-label">Author <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="autor" formControlName="autor"
+              [class.is-invalid]="autor?.invalid && autor?.touched">
+            <div class="invalid-feedback d-block" *ngIf="autor?.invalid && autor?.touched">
+              <span *ngIf="autor?.errors?.['required']">Author is required</span>
+              <span *ngIf="autor?.errors?.['minlength']">Author must be at least 2 characters</span>
+            </div>
+          </div>
+
+          <!-- ISBN -->
+          <div class="mb-3">
+            <label for="isbn" class="form-label">ISBN <span class="text-danger">*</span></label>
+            <input type="text" class="form-control" id="isbn" formControlName="isbn"
+              placeholder="e.g., 978-3-16-148410-0"
+              [class.is-invalid]="isbn?.invalid && isbn?.touched">
+            <div class="invalid-feedback d-block" *ngIf="isbn?.invalid && isbn?.touched">
+              <span *ngIf="isbn?.errors?.['required']">ISBN is required</span>
+              <span *ngIf="isbn?.errors?.['pattern']">ISBN must be a valid format (10-17 digits with optional hyphens)</span>
+            </div>
+          </div>
+
+          <!-- Ano -->
+          <div class="mb-3">
+            <label for="ano" class="form-label">Year <span class="text-danger">*</span></label>
+            <input type="number" class="form-control" id="ano" formControlName="ano"
+              [class.is-invalid]="ano?.invalid && ano?.touched">
+            <div class="invalid-feedback d-block" *ngIf="ano?.invalid && ano?.touched">
+              <span *ngIf="ano?.errors?.['required']">Year is required</span>
+              <span *ngIf="ano?.errors?.['min']">Year must be 1900 or later</span>
+              <span *ngIf="ano?.errors?.['max']">Year cannot exceed current year</span>
+            </div>
+          </div>
+
+          <!-- Categoria -->
+          <div class="mb-3">
+            <label for="categoriaId" class="form-label">Category <span class="text-danger">*</span></label>
+            <select class="form-select" id="categoriaId" formControlName="categoriaId"
+              [class.is-invalid]="categoriaId?.invalid && categoriaId?.touched">
+              <option value="">Select a category</option>
+              <option *ngFor="let cat of categorias" [value]="cat.id">{{ cat.nome }}</option>
+            </select>
+            <div class="invalid-feedback d-block" *ngIf="categoriaId?.invalid && categoriaId?.touched">
+              <span *ngIf="categoriaId?.errors?.['required']">Category is required</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="card-footer bg-light">
+          <button type="submit" class="btn btn-primary me-2" [disabled]="form.invalid || loading">
+            <span *ngIf="!loading">Create Book</span>
+            <span *ngIf="loading">
+              <span class="spinner-border spinner-border-sm me-2" role="status" aria-hidden="true"></span>
+              Creating...
+            </span>
+          </button>
+          <button type="button" class="btn btn-secondary" (click)="cancel()" [disabled]="loading">Cancel</button>
+        </div>
+      </form>
+    </div>
+  </div>
+</div>
