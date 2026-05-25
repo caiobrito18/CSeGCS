@@ -92,3 +92,5 @@ Desenvolvido como projeto educacional - SENAI.
 **Versão**: 0.1.0  
 **Status**: Em Desenvolvimento  
 **Última Atualização**: 2024
+
+<!-- Phase 2: CRUD Categorias adicionado -->
