@@ -7,6 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ---
 
+## [1.0.1] - 2024-12-20
+
+### Fixed
+- RF02: Validar status antes de excluir livro (não permitir excluir livro EMPRESTADO) (#4)
+
+### Added
+- Pipeline CI/CD: GitHub Actions workflow para validação de builds e testes do frontend/backend
+- Configuração do Docker para build de imagens do frontend/backend
+
 ## [1.0.0] - 2024-12-19
 
 ### 🎉 Major Release - Production Ready
